@@ -1,0 +1,1 @@
+Ekip arkadşım ile farklı IDE'ler kullandığımız için(Bu kod satırları eclips ile uygun şekilde yapılmıştır) farklı kod satırları oluşuyor 
