@@ -3,15 +3,25 @@ package sorting.algorithms;
 
 
 public class SortingAlgorithms {
-    static int StepIS=0; // Insertionsort adım sayısı
-    static int StepSS=0; // Selection Sort adım sayısı
-    static int StepBS=0; // Buuble sort adım sayısı
-    static int StepSheS=0; // Sheel sort adım sayısı
-    static int StepQS=0; //Quick Sort adım sayısı
-    static int StepCS=0; //Count sort adım sayısı
-    static void Insertionsort(int arr[]) {
+    public  int StepIS=0; // Insertionsort adım sayısı
+    public  int StepSS=0; // Selection Sort adım sayısı
+    public  int StepBS=0; // Buuble sort adım sayısı
+    public  int StepSheS=0; // Sheel sort adım sayısı
+    public  int StepQS=0; //Quick Sort adım sayısı
+    public  int StepCS=0; //Count sort adım sayısı
+    public  int dizieleman=0;
+    static int[] random(int dizieleman){
+        int[] arr=new int[dizieleman];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i]=(int)(Math.random()*1000);
+        }
+        return arr;
+    }
+    public  int[] Insertionsort(int arr[]) {
         int n = arr.length;
         //int Step=0;
+       // int[]arr2=new int[arr.length];
+       // arr2=arr;
         for (int i = 1; i < n; ++i) {
             int key = arr[i];
             int j = i - 1;
@@ -25,10 +35,13 @@ public class SortingAlgorithms {
             StepIS++;
             //System.out.println(Step);
         }
+        return arr;
     }
-    static void selectionSort(int arr[]) {
+    public  int[] selectionSort(int arr[]) {
         int n = arr.length;
         //int Step=0;
+       // int[]arr2=new int[arr.length];
+       // arr2=arr;
         for(int i = 0; i < n -1; i ++) {
             int index_min = i;
             for (int j = i; j < n; j++) {
@@ -45,11 +58,14 @@ public class SortingAlgorithms {
                 //System.out.println(Step);
             }
         }
+        return arr;
     }
-    static int[] bubbleSort(int arr[]) {
+    public int[] bubbleSort(int arr[]) {
         int length = arr.length;
         int temp;
         //int Step=0;
+       // int[]arr2=new int[arr.length];
+        //arr2=arr;
         for (int i = 0; i < length - 1; i++)
             for (int j = 0; j < length - i - 1; j++) {
                 if(arr[j] > arr[j + 1]) {
@@ -62,10 +78,12 @@ public class SortingAlgorithms {
             }
         return arr;
     }
-    static int shellSort(int arr[]) {
+    public int[] shellSort(int arr[]) {
         int n = arr.length;
         //int Step=0;
 
+        //int[]arr2=new int[arr.length];
+        //arr2=arr;
         for (int gap = n/2; gap > 0; gap /= 2) {
             for (int i = gap; i < n; i += 1) {
                 int temp = arr[i];
@@ -79,18 +97,23 @@ public class SortingAlgorithms {
                 //System.out.println(Step);
             }
         }
-        return 0;
+        return arr;
     }
-    static void quickSort(int[] arr, int low, int high) {
+    public int[] quickSort(int[] arr, int low, int high) {
+       // int[]arr2=new int[arr.length];
+        //arr2=arr;
         if (low < high) {
             int pi = partition(arr, low, high);
             quickSort(arr, low, pi - 1);
             quickSort(arr, pi + 1, high);
             StepQS++;
         }
+        return arr;
     }
-    static void countSort(int arr[], int n) { //Saymalı Sıralama
+    public int[] countSort(int arr[], int n) { //Saymalı Sıralama
         int[] output = new int[n + 1];
+       // int[]arr2=new int[arr.length];
+       // arr2=arr;
 
         int max = arr[0];
         for (int i = 1; i < n; i++) {
@@ -120,10 +143,11 @@ public class SortingAlgorithms {
             arr[i] = output[i];
             StepCS++;
         }
+        return arr;
     }    
     
 
-    static void printArray(int arr[]) {
+    public static void printArray(int arr[]) {
         int n = arr.length;
         for (int i = 0; i < n; ++i)
             System.out.print(arr[i] + " ");
@@ -153,12 +177,21 @@ public class SortingAlgorithms {
         }
         swap(arr, i + 1, high);
         return (i + 1);
-    }    
+    }   
+    public void Sifirla(){
+        StepIS=0; // Insertionsort adım sayısı
+        StepSS=0; // Selection Sort adım sayısı
+        StepBS=0; // Buuble sort adım sayısı
+        StepSheS=0; // Sheel sort adım sayısı
+        StepQS=0; //Quick Sort adım sayısı
+        StepCS=0; //Count sort adım sayısı
+        dizieleman=0;
+    }
 
 
     public static void main(String[] args) {
-        int[]arr={4,5,1,3,2,8,9,6};
-        int[]arr2=new int[arr.length];
+        //int[]arr={4,5,1,3,2,8,9,6};
+        //int[]arr2=new int[arr.length];
         //Insertionsort(arr);
         //selectionSort(arr);
         //arr2=bubbleSort(arr);
@@ -169,10 +202,12 @@ public class SortingAlgorithms {
         //quickSort(arr, 0, arr.length-1);
         //printArray(arr);
         //System.out.println(StepQS);
-        countSort(arr, arr.length);
-        printArray(arr);
-        System.out.println(StepCS);
-        
+        //countSort(arr, arr.length);
+        //printArray(arr);
+        //System.out.println(StepCS);
+        int[] dizi=new int[5];
+        dizi=random(5);
+        printArray(dizi);
     }
     
 }
