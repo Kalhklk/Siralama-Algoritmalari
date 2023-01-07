@@ -7,21 +7,23 @@ import javax.swing.JPanel;
 public class GUI extends javax.swing.JFrame {
 
     SortingAlgorithms S1;
-    //Ciziktir c1;
-    //private Graphics g;
+    Heap h1;
     public int[] arr1;
-        //public int arr2 [];
+        
 	public int arrInsert [];
 	public int arrSelect [];
 	public int arrbubble [];
 	public int arrshell [];
 	public int arrquict [];
 	public int arrcount [];
+        public int arrMerge[];
+        public int arrHeap[];
     
     public GUI() {
         initComponents();
         S1= new SortingAlgorithms();
-       // c1=new Ciziktir();
+        h1=new Heap(100);
+        
     }
 
 
@@ -54,7 +56,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Insertion Sort", "Bubble Sort", "Selection Sort", "Shell Sort", "Quick Sort", "Count Sort" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Insertion Sort", "Bubble Sort", "Selection Sort", "Shell Sort", "Quick Sort", "Count Sort", "Merge Sort", "Heap Sort" }));
         jComboBox1.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 jComboBox1ComponentAdded(evt);
@@ -174,7 +176,8 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         S1.Sifirla(); // adım sayısı sıfırlama
-        //int[] arr1=new int[Integer.parseInt(jTextField1.getText())];
+        h1.StepHS=0;  // Heap adım sayısı sıfırlama
+        
         int elemansayısı=Integer.parseInt(jTextField1.getText());
         arr1=new int[Integer.parseInt(jTextField1.getText())];
         int[] arr2=new int[Integer.parseInt(jTextField1.getText())];
@@ -207,6 +210,14 @@ public class GUI extends javax.swing.JFrame {
 	for(int i=0;i<arr1.length;i++) {
 	arrcount[i] = arr1[i];
 	}
+	arrMerge = new int [arr1.length];
+	for(int i=0;i<arr1.length;i++) {
+	arrMerge[i] = arr1[i];
+	}        
+	arrHeap = new int [arr1.length];
+	for(int i=0;i<arr1.length;i++) {
+	arrHeap[i] = arr1[i];
+	}        
  //random dizi oluşturma
         
         String s ="";
@@ -217,13 +228,6 @@ public class GUI extends javax.swing.JFrame {
             
         }
         jTextArea2.setText(s + " ");
-       /* arr2=S1.bubbleSort(arr1);
-        for (int i = 0; i < elemansayısı; i++) {
-            y+=Integer.toString(arr2[i]);
-            y+=" ";
-            
-        }*/
-        //jTextArea1.setText(y+" ");
         if (jComboBox1.getSelectedItem()=="Bubble Sort") {
             arr2=S1.bubbleSort(arrbubble);
             for (int i = 0; i < elemansayısı; i++) {
@@ -236,7 +240,9 @@ public class GUI extends javax.swing.JFrame {
             S1.countSort(arrcount, arrcount.length);
             S1.quickSort(arrquict, 0, arrquict.length-1);
             S1.selectionSort(arrSelect);
-            S1.shellSort(arrshell);            
+            S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
         }
         else if (jComboBox1.getSelectedItem()=="Insertion Sort") {
         arr2=S1.Insertionsort(arrInsert);
@@ -250,7 +256,9 @@ public class GUI extends javax.swing.JFrame {
             S1.countSort(arrcount, arrcount.length);
             S1.quickSort(arrquict, 0, arrquict.length-1);
             S1.selectionSort(arrSelect);
-            S1.shellSort(arrshell);          
+            S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
         }
         else if (jComboBox1.getSelectedItem()=="Selection Sort") {
         arr2=S1.selectionSort(arrSelect);
@@ -264,7 +272,9 @@ public class GUI extends javax.swing.JFrame {
             S1.countSort(arrcount, arrcount.length);
             S1.quickSort(arrquict, 0, arrquict.length-1);
             //S1.selectionSort(arrSelect);
-            S1.shellSort(arrshell);          
+            S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
         }
         else if (jComboBox1.getSelectedItem()=="Shell Sort") {
         arr2=S1.shellSort(arrshell);
@@ -278,7 +288,9 @@ public class GUI extends javax.swing.JFrame {
             S1.countSort(arrcount, arrcount.length);
             S1.quickSort(arrquict, 0, arrquict.length-1);
             S1.selectionSort(arrSelect);
-            //S1.shellSort(arrshell);          
+            //S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
         }
         else if (jComboBox1.getSelectedItem()=="Quick Sort") {
         arr2=S1.quickSort(arrquict,0, arrquict.length-1);
@@ -292,7 +304,9 @@ public class GUI extends javax.swing.JFrame {
             S1.countSort(arrcount, arrcount.length);
             //S1.quickSort(arrquict, 0, arrquict.length-1);
             S1.selectionSort(arrSelect);
-            S1.shellSort(arrshell);         
+            S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
         }
         else if (jComboBox1.getSelectedItem()=="Count Sort") {
         arr2=S1.countSort(arrcount, arrcount.length);
@@ -306,13 +320,47 @@ public class GUI extends javax.swing.JFrame {
             //S1.countSort(arrcount, arrcount.length);
             S1.quickSort(arrquict, 0, arrquict.length-1);
             S1.selectionSort(arrSelect);
-            S1.shellSort(arrshell);          
+            S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
         }
+        else if (jComboBox1.getSelectedItem()=="Merge Sort") {
+        arr2=S1.Mergesort(arrMerge,0 ,arrMerge.length-1);
+        for (int i = 0; i < elemansayısı; i++) {
+            y+=Integer.toString(arr2[i]);
+            y+=" ";
+            
+        }
+            S1.Insertionsort(arrInsert);
+            S1.bubbleSort(arrbubble);
+            S1.countSort(arrcount, arrcount.length);
+            S1.quickSort(arrquict, 0, arrquict.length-1);
+            S1.selectionSort(arrSelect);
+            S1.shellSort(arrshell);
+            //S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            h1.HeapSort(arrHeap);
+        }
+        else if (jComboBox1.getSelectedItem()=="Heap Sort") {
+        arr2=h1.HeapSort(arrHeap);
+        for (int i = 0; i < elemansayısı; i++) {
+            y+=Integer.toString(arr2[i]);
+            y+=" ";
+            
+        }
+            S1.Insertionsort(arrInsert);
+            S1.bubbleSort(arrbubble);
+            S1.countSort(arrcount, arrcount.length);
+            S1.quickSort(arrquict, 0, arrquict.length-1);
+            S1.selectionSort(arrSelect);
+            S1.shellSort(arrshell);
+            S1.Mergesort(arrMerge,0,arrMerge.length-1);
+            //h1.HeapSort(arrHeap);
+        }        
         jTextArea1.setText(y+" ");
 
         
-        jTextArea3.setText( "Bubble Sort:"+S1.StepBS+"\nİnsertion Sort"+S1.StepIS+"\nSelection Sort"+ S1.StepSS +"\nShell Sort"+S1.StepSheS+
-                "\nQuick Sort"+S1.StepQS+"\nCount Sort"+S1.StepCS);
+        jTextArea3.setText( "Bubble Sort: "+S1.StepBS+"\nİnsertion Sort "+S1.StepIS+"\nSelection Sort "+ S1.StepSS +"\nShell Sort "+S1.StepSheS+
+                "\nQuick Sort "+S1.StepQS+"\nCount Sort "+S1.StepCS+"\nMerge Sort "+S1.StepMS+"\nHeapSort "+ h1.StepHS);
     }//GEN-LAST:event_jButton1ActionPerformed
 
        /* @Override
