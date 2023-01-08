@@ -15,6 +15,10 @@ public class GUISorting {
 	private JFrame frame;
 	private JTextField textField;
 	SortingAlgo so;
+	Heap h1;
+	Pacman2 pc;
+	Grafik gf;
+	
 	public int arr2 [];
 	public int arrInter [];
 	public int arrSelect [];
@@ -22,18 +26,18 @@ public class GUISorting {
 	public int arrshell [];
 	public int arrquict [];
 	public int arrcount [];
-
-	public int basmaSayısı=1;
-	
-	
-	
-	
+    public int arrMerge[];
+    public int arrHeap[];
+	public int dizi[] = {8,7,4,1,2,5,6,3};
+	public int forGraf[];
+		
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					GUISorting window = new GUISorting();
 					window.frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,10 +45,11 @@ public class GUISorting {
 		});
 	}
 
-
 	public GUISorting() {
 		initialize();
 		so = new SortingAlgo();
+		h1=new Heap(100);
+		pc = new Pacman2();
 	}
 
 
@@ -59,7 +64,7 @@ public class GUISorting {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		String alg[] = {"Inter" ,"Select" , "Buuble" , "Shell","Quick", "Count"}; 
+		String alg[] = {"Insertion" ,"Selection" , "Buuble" , "Shell","Quick", "Count","Merge", "Heap"}; 
 		final JComboBox comboBox = new JComboBox(alg);
 		comboBox.setEditable(true);
 		comboBox.setBounds(24, 143, 170, 22);
@@ -86,31 +91,25 @@ public class GUISorting {
 		frame.getContentPane().add(textArea);
 		
 		final JTextArea textArea_4 = new JTextArea();
-		textArea_4.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		textArea_4.setBounds(324, 323, 418, 220);
+		textArea_4.setFont(new Font("Monospaced", Font.PLAIN, 14));
+		textArea_4.setBounds(423, 323, 319, 220);
 		frame.getContentPane().add(textArea_4);
 		
 		
 		JButton btnNewButton = new JButton("Dizi Yap");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int elemanIndex = comboBox.getSelectedIndex();
 			    int elemansay=Integer.parseInt(textField.getText());
 			    int arr1 [] = new int [elemansay];
-
-			   
-	
-			    
+	    
 				arr1=so.random(elemansay);
 			    String s ="";
 			   
 			    for (int i = 0; i < elemansay; i++) {
 			          s+=Integer.toString(arr1[i]) + " ";			            
 			       }
-			    textArea.setText(s );
+			    textArea.setText(s);
 			    
-			  
-			   
 			    
 			    arrInter = new int [arr1.length];
 			    for(int i=0;i<arr1.length;i++) {
@@ -140,13 +139,17 @@ public class GUISorting {
 			    for(int i=0;i<arr1.length;i++) {
 			    	arrcount[i] = arr1[i];
 			    }
-
-					        
-			        
-			        
+			    arrMerge = new int [arr1.length];
+			    for(int i=0;i<arr1.length;i++) {
+			    	arrMerge[i] = arr1[i];
+			    }			   
+			    arrHeap = new int [arr1.length];
+			    for(int i=0;i<arr1.length;i++) {
+			    	arrHeap[i] = arr1[i];
+			    }
 			}
 		});
-		btnNewButton.setBounds(391, 31, 170, 63);
+		btnNewButton.setBounds(255, 35, 156, 63);
 		frame.getContentPane().add(btnNewButton);
 		
 		final JButton btnSrala = new JButton("Sırala");
@@ -155,13 +158,12 @@ public class GUISorting {
 				int elemanIndex = comboBox.getSelectedIndex();
 			    int elemansay=Integer.parseInt(textField.getText());
 			    so.sifirla();
-	
-			    
-		
+			    h1.StepHS=0;
+			    h1.StepHS2=0;
 			    
 				  switch(elemanIndex+1) {
 				    case 1:
-				    	so.Insertionsort(arrInter);
+				    	so.Insertionsort(dizi);
 				    	 String StepIS = Integer.toString(so.StepIS); 
 				    	 
 				    	 String sInter ="";
@@ -227,8 +229,8 @@ public class GUISorting {
 
 				      break;
 				    case 5:
-				    	so.quickSort(arrquict,0,arrquict.length-1);
-				    	String StepQS = Integer.toString(so.StepQS); 
+				    	so.quickSort1(arrquict,0,arrquict.length-1);
+				    	String StepQS = Integer.toString(so.StepQS1); 
 
 				    	 String sQuick ="";
 				    	 String sQuicStep= so.printArray(arrquict);
@@ -245,8 +247,8 @@ public class GUISorting {
 					    	
 				      break;
 				    case 6:
-				    	so.countSort(arrcount, arrcount.length);
-				    	String StepCO = Integer.toString(so.StepCS); 
+				    	so.countSort1(arrcount, arrcount.length);
+				    	String StepCO = Integer.toString(so.StepCS1); 
 
 				    	 String sCount ="";
 				    	 String sCounttep= so.printArray(arrcount);
@@ -261,24 +263,67 @@ public class GUISorting {
 					    	textArea_4.setText(sCounttep);
 
 				      break;
-				  }
-				  
+				    case 7:
+				    	so.Mergesort(arrMerge, 0, arrMerge.length-1);
+				    	String StepMerge = Integer.toString(so.StepMS); 
 
-				  so.Insertionsort(arrInter);
+				    	 String sMerge ="";
+				    	 String sMergeStep= so.printArray(arrMerge);
+
+					    	arr2 = arrMerge;
+					    	 
+					    	for(int i=0;i<arrInter.length;i++) {
+					    		sMerge+=Integer.toString(arr2[i]) + " ";
+					    	}
+					    	textArea_3.setText(sMerge);
+					    	textArea_2.setText(StepMerge);
+					    	textArea_4.setText(sMergeStep);
+
+				      break;
+				    case 8:
+				    	h1.HeapSort(arrHeap);
+				    	String StepHeap = Integer.toString(h1.StepHS); 
+
+				    	 String sHeap ="";
+				    	 String sHeapStep= h1.printArray(arrHeap);
+
+					    	arr2 = arrHeap;
+					    	 
+					    	for(int i=0;i<arrInter.length;i++) {
+					    		sHeap+=Integer.toString(arr2[i]) + " ";
+					    	}
+					    	textArea_3.setText(sHeap);
+					    	textArea_2.setText(StepHeap);
+					    	textArea_4.setText(sHeapStep);
+
+				      break;
+				      
+				  }  
+				    so.Insertionsort(arrInter);
 			    	so.selectionSort(arrSelect);
 			    	so.bubbleSort(arrbuble);
 			    	so.shellSort(arrshell,arrshell.length);
-			    	so.quickSort(arrquict, 0, arrquict.length-1);
-			    	so.countSort(arrcount, arrcount.length);
-			    	
-			    	
+			    	so.quickSort2(arrquict, 0, arrquict.length-1);
+			    	so.countSort2(arrcount, arrcount.length);
+			    	so.Mergesort2(dizi, 0, arrMerge.length-1);
+			    	h1.HeapSort2(arrHeap);
+
+			    	   forGraf = new int [8];
+					   forGraf[0] = so.StepIS;
+					   forGraf[1] = so.StepSS;
+					   forGraf[2] = so.StepBS;
+					   forGraf[3] = so.StepSheS;
+					   forGraf[4] = so.StepQS2;
+					   forGraf[5] = so.StepCS2;
+					   forGraf[6] = so.StepMS2;
+					   forGraf[7] = h1.StepHS2;
+		    	
 				    textArea_1.setText("Insertion Sort: "+so.StepIS+"\nSelection Sort: "+ so.StepSS + "\nBubble Sort: "+so.StepBS +"\nShell Sort: "+so.StepSheS+
-			                "\nQuick Sort: "+so.StepQS+"\nCount Sort: "+so.StepCS);
-			
-				  
+			                "\nQuick Sort: "+so.StepQS2+"\nCount Sort: "+(so.StepCS2) +"\nMerge Sort: "+ so.StepMS2  +"\nHeap Sort: "+ h1.StepHS2 );
+	  
 			}
 		});
-		btnSrala.setBounds(572, 31, 170, 63);
+		btnSrala.setBounds(423, 35, 156, 63);
 		frame.getContentPane().add(btnSrala);
 		
 		JLabel lblNewLabel = new JLabel("Dizinin Son Hali");
@@ -305,6 +350,15 @@ public class GUISorting {
 		lblOluturulanDizi.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblOluturulanDizi.setBounds(335, 116, 95, 28);
 		frame.getContentPane().add(lblOluturulanDizi);
+		
+		JButton btnNewButton_1 = new JButton("Çizdir");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gf.Start2(forGraf);
+			}
+		});
+		btnNewButton_1.setBounds(589, 35, 137, 63);
+		frame.getContentPane().add(btnNewButton_1);
 		
 		
 		
